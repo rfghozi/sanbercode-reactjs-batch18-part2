@@ -1,0 +1,98 @@
+#content{
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 1000px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    padding-bottom: 20px;
+}
+
+#title{
+    text-align: center;
+}
+
+#tabel{
+    width: 900px;
+    border: 1px solid black;
+    margin: 0px auto;
+}
+
+#databuah{
+    border-collapse: collapse;
+    width: 900px;
+    margin: 0px auto;
+}
+
+#databuah td, th {
+    border: 3px solid white;
+    padding: 8px;
+}
+
+#databuah tr{
+    background-color: peachpuff;
+}
+
+#databuah th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: coral;
+    color: black;
+}
+
+#databuah td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.btn{
+    margin-right: 5px;
+    text-decoration: none; 
+    background-color: unset; 
+    height: 30px; 
+    font-weight: bold; 
+    font-size: 15px; 
+    border-radius: 4px;
+}
+
+.form{
+    text-align: center;
+    display: flex; 
+    flex-direction: column;
+}
+
+.input1, .input2, .input3 {
+    font-weight: bold
+}
+
+.input1{
+     margin-right: 27px;
+}
+
+.input2{
+    margin-right: 25px;
+}
+
+.input3{
+    margin-right: 30px;  
+}
+
+.type{
+    border: 2px solid black;
+    border-radius: 5px;
+    height: 20px;
+}
+
+.btn-submit{
+        margin-top: 5px;
+        width: 250px;
+        text-decoration: none;
+        border: 2px solid black;
+        border-radius: 5px;
+        height: 30px;
+        font-weight: bold;
+}
+
+
+
