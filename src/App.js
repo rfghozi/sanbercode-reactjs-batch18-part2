@@ -5,6 +5,7 @@ import Table from './Tugas-10/tugas10'
 import Timer from './Tugas-11/tugas11'
 import Table2 from './Tugas-12/tugas12'
 import HooksWithAxios from './Tugas-13/tugas13'
+import DataBuah from './Tugas-14/DataBuah'
 
 function App() {
     return(
@@ -13,7 +14,8 @@ function App() {
         <Table />
         <Timer />
         <Table2 /> */}
-        <HooksWithAxios />
+        {/* <HooksWithAxios /> */}
+        <DataBuah />
       </div>
     );
 }
