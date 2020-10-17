@@ -1,15 +1,15 @@
 import React from "react"
 import FormBuah from "./FormBuah"
 import ListBuah from "./ListBuah"
-import { DaftarBuahProvider } from "./BuahContext"
+import { DataBuahProvider } from "./BuahContext"
 
 
 const DataBuah = () =>{
     return(
-        <DaftarBuahProvider>
+        <DataBuahProvider>
             <ListBuah />
             <FormBuah />
-        </DaftarBuahProvider>
+        </DataBuahProvider>
     )
 }
 

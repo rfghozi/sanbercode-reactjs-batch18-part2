@@ -1,74 +1,105 @@
-import React, {useContext} from "react"
-import {DaftarBuahContext} from "./BuahContext"
+import React, {useContext, useState, useEffect} from "react"
+import {DataBuahContext} from "./BuahContext"
 import axios from "axios"
 
 const FormBuah = () => {
 
-    const {DaftarBuah, setDaftarBuah, Input, setInput} = useContext(DaftarBuahContext) 
+    const [DataBuah, setDataBuah] = useContext(DataBuahContext) 
+    const [Input, setInput] = useState({name: "", price: "", weight: 0})
 
-    const handleChange = (e) => {
-        const id = e.target.id
-        const value = e.targer.value
-        setInput({...Input,...{[id]: value} });
+    useEffect(() => {
+        if (DataBuah.stat === "changeToEdit"){
+            let buah = DataBuah.list.find(x => x.id === DataBuah.selID)
+            setInput({name: buah.name, price: buah.price, weight: buah.weight})
+            setDataBuah({...DataBuah, stat: "edit"})
+        }
+    }, [DataBuah, setDataBuah])
 
+    const handleChange = (event) =>{
+        let typeOfInput = event.target.name
+
+        switch (typeOfInput){
+        case "nama":
+        {
+            setInput({...Input, name: event.target.value});
+            break
+        }
+        case "harga":
+        {
+            setInput({...Input, price: event.target.value});
+            break
+        }
+        case "berat":
+        {
+            setInput({...Input, weight: event.target.value});
+            break
+        }
+        default:
+            {break;}
+        }
     }
+
 
     const handleSubmit = (event) => {
         event.preventDefault()
         let name = Input.name
         let price = Input.price.toString()
 
-        if (Input.id === null) {
+        if (DataBuah.stat === "create") {
             axios.post(`http://backendexample.sanbercloud.com/api/fruits`, {name, price, weight: Input.weight})
             .then(res => {
-                setDaftarBuah([
-                    ...DaftarBuah,
-                    {
-                        id: res.data.id,
-                        name,
-                        price,
-                        weight: Input.weight
-                    }])
+                setDataBuah(
+                    {stat: "create", selID: 0, 
+                        list: [
+                            ...DataBuah.list, {
+                            id: res.list.id,
+                            name: Input.name,
+                            price: Input.price,
+                            weight: Input.weight
+                        }]
+                    }
+                )
             })
-        } else {
-            axios.put(`http://backendexample.sanbercloud.com/api/fruits/${Input.id}`,{name, price, weight: Input.weight})
+        } else if(DataBuah.stat === "edit"){
+            axios.put(`http://backendexample.sanbercloud.com/api/fruits/${DataBuah.selID}`,{name, price, weight: Input.weight})
             .then(() => {
-                let dataBuah = DaftarBuah.find(el => el.id === Input.id)
-                dataBuah.name = name
-                dataBuah.price = price
-                dataBuah.weight = Input.weight
-                setDaftarBuah([...DaftarBuah])
+                let DataBuah = DataBuah.list.find(el => el.id === DataBuah.selID)
+                DataBuah.name = Input.name
+                DataBuah.price = Input.price
+                DataBuah.weight = Input.weight
+                setDataBuah({stat: "create", selID: 0, list: [...DataBuah.list]})
             })
         }
-        setInput({name: "", price: "", weight: 0, id: null})
+        setInput({name: "", price: "", weight: 0})
     }
 
     return (
-        <di>
+        <div>
          <h2 style={{ textAlign:"center" }}>Data Buah Baru</h2>
          <form className="form" onSubmit={handleSubmit}>
             <span style={{ marginBottom:"8px" }}>
             <label className= "input1">
                     Nama
             </label>
-            <input className="type" type="text" required id="name" onChange={handleChange} value={Input.name} />
+            <input className="type" type="text" required name="nama" onChange={handleChange} value={Input.name} />
             </span>
             <span style={{ marginBottom:"8px" }}>
             <label className= "input2">
                     Harga
             </label>
-            <input className="type" type="number" required id="price" value={Input.price}  onChange={handleChange} />
+            <input className="type" type="number" required name="harga" value={Input.price}  onChange={handleChange} />
             </span>
             <span style={{ marginBottom:"8px" }}>
             <label className= "input3">
                     Berat
             </label>
-            <input className="type" type="number" required id="weight" value={Input.weight} onChange={handleChange} />
+            <input className="type" type="number" required name="berat" value={Input.weight} onChange={handleChange} />
             </span>
             <span><button className="btn-submit">SUBMIT</button></span>
          </form>
-        </di>
+        </div>
     )
+    
 }
 
-export default FormBuah
+export default FormBuah;

@@ -1,28 +1,47 @@
-import React, { useContext } from "react"
-import {DaftarBuahContext} from "./BuahContext"
+import React, { useContext, useEffect } from "react"
+import {DataBuahContext} from "./BuahContext"
 import axios from "axios"
 
 const ListBuah = () => {
-    const {DaftarBuah, setDaftarBuah, Input, setInput} = useContext(DaftarBuahContext)
+    const [DataBuah, setDataBuah] = useContext(DataBuahContext)
 
-
-
-     const handleDelete = (event) => {
-        let idDaftarBuah = parseInt(event.target.value)
-        axios.delete(`http://backendexample.sanbercloud.com/api/fruits/${idDaftarBuah}`)
-        .then(() => { 
-            setDaftarBuah(null)
+    useEffect( () => {
+    if (DataBuah.lists === null){
+      axios.get(`http://backendexample.sanbercloud.com/api/fruits`)
+        .then(res => {
+            setDataBuah({
+            ...DataBuah, 
+            lists: res.data.map(el=>{ 
+                return {id: el.id,
+                name: el.name, 
+                price: el.price, 
+                weight: el.weight 
+                }
+            })
+            })
         })
-    }
+        }
+    }, [setDataBuah, DataBuah])
+
 
     const handleEdit = (event) => {
-        let idDaftarBuah = parseInt(event.target.value)
-        axios.get(`http://backendexample.sanbercloud.com/api/fruits/${idDaftarBuah}`)
-        .then(res => {
-            let DaftarBuah = res.data
-            setInput({name: DaftarBuah.name, price: DaftarBuah.price, weight: DaftarBuah.weight, id: idDaftarBuah})
-        })
+        let idDataBuah = parseInt(event.target.value)
+        setDataBuah({...DataBuah, selID: idDataBuah, stat: "changeToEdit"})
     }
+
+     const handleDelete = (event) => {
+        let idDataBuah = parseInt(event.target.value)
+
+        let newList = DataBuah.list.filter(el => el.id !== idDataBuah)
+
+        axios.delete(`http://backendexample.sanbercloud.com/api/fruits/${idDataBuah}`)
+        .then(res => { 
+            console.log(res)
+        })
+
+        setDataBuah({...DataBuah, list: [...newList]})
+    }
+
 
     return (
         <div id="content">
@@ -40,8 +59,8 @@ const ListBuah = () => {
                     </thead>
                     <tbody>
                         {
-                            DaftarBuah !== null && (
-                            setDaftarBuah.map((item, index) =>{
+                            DataBuah.list !== null && 
+                            setDataBuah.list.map((item, index) => {
                                 return(
                                     <tr key={index.id}>
                                         <td>{index+1}</td>
@@ -56,7 +75,7 @@ const ListBuah = () => {
                                 
                                 )
                             })
-                        )}
+                        }
 
                     </tbody>
                 </table>
